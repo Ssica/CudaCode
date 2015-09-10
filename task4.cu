@@ -69,11 +69,9 @@ int main(int argc, char** arigv) {
 
 	for(unsigned int i=0; i<num_threads; ++i){
 		if(abs(h_out[i] - tmpList[i]) > epsilon){
-			printf("Something failed: at index %d", i);
-			mep = 0;
+			printf("Something failed: at index");
 		}
 	}
-
 	if(mep == 1){
 		std::cout<<"Valid\n";
 	}
