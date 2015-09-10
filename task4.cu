@@ -1,11 +1,12 @@
 #include <stdlib.h>
+#include <iostream>
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
 #include <cuda_runtime.h>
 #include <sys/time.h>
 #include <time.h>
-const int listLength = 400;  //753411;
+const int listLength = 753411;
 __global__ void squareKernel(float* d_in, float *d_out, int threads_num) {
 const unsigned int lid = threadIdx.x; // local id inside a block
 const unsigned int gid = blockIdx.x*blockDim.x + lid; // global id
@@ -26,11 +27,13 @@ int main(int argc, char** arigv) {
 	unsigned int mem_size = num_threads*sizeof(float);
 	unsigned int block_size = 256;
 	unsigned int num_blocks = ((num_threads + (block_size-1)) / block_size);
-	unsigned long int elapsed;
+	unsigned long int elapsed1;
+	unsigned long int elapsed2;
 	struct timeval t_start, t_end, t_diff;
 	float* h_in = (float*)malloc(mem_size);
 	float* h_out = (float*)malloc(mem_size);
-	float epsilon = 1*1e-5;
+	float tmpList[listLength];
+	float epsilon = 1*1e-4;
 	for(unsigned int i = 0; i<num_threads; ++i){
 		h_in[i] = (float)i;
 	}
@@ -39,12 +42,12 @@ int main(int argc, char** arigv) {
 	//Serial mapping
 	gettimeofday(&t_start, NULL);
 	for(int i = 0; i < listLength; ++i){
-		h_out[i] = powf((h_in[i]/(h_in[i]-2.3)),3.0);
+		tmpList[i] = powf((h_in[i]/(h_in[i]-2.3)),3.0);
 	}
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed1 = t_diff.tv_sec*1e6+t_diff.tv_usec;
-	printf("Serial Mapping took %d microseconds (%.2fms)\n",elapsed,elapsed/1000.0);
+	printf("Serial Mapping took %d microseconds (%.2fms)\n",elapsed1,elapsed1/1000.0);
 	//Parallel Mapping
 	float* d_in;
 	float* d_out;
@@ -58,15 +61,25 @@ int main(int argc, char** arigv) {
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed2 = t_diff.tv_sec*1e6+t_diff.tv_usec;
-	printf("Parallel mapping took %d microseconds (%.2fms)\n",elapsed,elapsed/1000.0);
+	printf("Parallel mapping took %d microseconds (%.2fms)\n",elapsed2,elapsed2/1000.0);
 
 	cudaMemcpy(h_out, d_out, sizeof(float)*num_threads, cudaMemcpyDeviceToHost);
 
-	if(abs(elapsed2-elapsed1) > epsilon){
-	printf("Difference in microseconds: %d", abs(elapsed2-elapsed1))
+	unsigned int mep = 1;
+
+	for(unsigned int i=0; i<num_threads; ++i){
+		if(abs(h_out[i] - tmpList[i]) > epsilon){
+			printf("Something failed: at index %d", i);
+			mep = 0;
+		}
 	}
-	//for(unsigned int i=0; i<num_threads; ++i) printf("%.10f\n", h_out[i]);
-	
+
+	if(mep == 1){
+		std::cout<<"Valid\n";
+	}
+	if(mep == 0){
+		std::cout<<"Invalid\n";
+	}
 	// clean-up memory
 	free(h_in);
 	free(h_out);
