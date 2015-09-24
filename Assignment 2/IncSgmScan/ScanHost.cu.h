@@ -86,14 +86,12 @@ void scanExc(    unsigned int  block_size,
                  T*            d_in,  // device
                  T*            d_out  // device
 ) {
-	T *tmpArray, T *d_rec_in, *d_rec_out;
+	T *tmpArray;
 
 	cudaMalloc((void**)&tmpArray , num_blocks*sizeof(T));
-    cudaMalloc((void**)&d_rec_in , num_blocks*sizeof(T));
-    cudaMalloc((void**)&d_rec_out, num_blocks*sizeof(T));
 
-	tmpArray = scanInc(block_size, d_size, d_in, d_out);
-	
+	scanInc(block_size, d_size, d_in, tmpArray);
+
 	shiftRightByOne<T><<< tmpArray, d_out, OP::identity(), d_size>>>;
 	cudaThreadSynchronize();
 
@@ -189,14 +187,12 @@ void sgmScanExc( const unsigned int  block_size,
                  int*          flags, //device
                  T*            d_out  //device
 ) {
- 	T *tmpArray, T *d_rec_in, *d_rec_out;
+ 	T *tmpArray;
 
 	cudaMalloc((void**)&tmpArray , num_blocks*sizeof(T));
-    cudaMalloc((void**)&d_rec_in , num_blocks*sizeof(T));
-    cudaMalloc((void**)&d_rec_out, num_blocks*sizeof(T));
 
-	tmpArray = sgmScanInc(block_size, flags, d_size, d_in, d_out);
-	
+	sgmScanInc(block_size, flags, d_size, d_in, tmpArray);
+
 	sgmshiftRightByOne<T><<< tmpArray, flags,d_out, OP::identity(), d_size>>>;
 	cudaThreadSynchronize();
 

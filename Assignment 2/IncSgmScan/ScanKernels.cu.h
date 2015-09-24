@@ -46,10 +46,10 @@ class MsspOp {
     typedef MyInt4 BaseType;
     static __device__ inline MyInt4 identity() { return MyInt4(0,0,0,0); }  
     static __device__ inline MyInt4 apply(volatile MyInt4& t1, volatile MyInt4& t2) { 
-        int mss = 0; // ... fill in the blanks ...
-        int mis = 0; // ... fill in the blanks ...
-        int mcs = 0; // ... fill in the blanks ...
-        int t   = 0; // ... fill in the blanks ...
+        int mss = max(max(t1.x, t2.x), (t1.z+t2.y))// ... fill in the blanks ...
+        int mis = max(max(t1.x, t2.x), (t1.z, t2.y))
+        int mcs = max((t1.z+t2.w), t2.z); // ... fill in the blanks ...
+        int t   = t1.w + t2.w; // ... fill in the blanks ...
         return MyInt4(mss, mis, mcs, t); 
     }
 };
@@ -295,6 +295,11 @@ __global__ void
 msspTrivialMap(int* inp_d, MyInt4* inp_lift, int inp_size) {
     const unsigned int gid = blockIdx.x*blockDim.x + threadIdx.x;
     if(gid < inp_size) {
+		if(inp_d[gid] == 0){
+			inp_list[gid] = MyInt4 pew(0, 0, 0, inp_d[gid]);
+		}else{
+			inp_list[gid] = MyInt4 pew(inp_d[gid],inp_d[gid],inp_d[gid],inp_d[gid]);
+		}
         // ... fill in the blanks ...
     }
 }
