@@ -6,7 +6,7 @@
 #include <cuda_runtime.h>
 #include <sys/time.h>
 #include <time.h>
-const int listLength = 753411;
+const int listLength = 700;
 __global__ void squareKernel(float* d_in, float *d_out, int threads_num) {
 const unsigned int lid = threadIdx.x; // local id inside a block
 const unsigned int gid = blockIdx.x*blockDim.x + lid; // global id
@@ -23,7 +23,7 @@ int timeval_subtract(struct timeval* result,struct timeval* t2,struct timeval* t
 }
 
 int main(int argc, char** arigv) {
-	unsigned int num_threads = listLength;
+	unsigned int num_threads = 75311;
 	unsigned int mem_size = num_threads*sizeof(float);
 	unsigned int block_size = 256;
 	unsigned int num_blocks = ((num_threads + (block_size-1)) / block_size);
@@ -67,9 +67,9 @@ int main(int argc, char** arigv) {
 
 	unsigned int mep = 1;
 
-	for(unsigned int i=0; i<num_threads; ++i){
+	for(unsigned int i=0; i<listLength; ++i){
 		if(abs(h_out[i] - tmpList[i]) > epsilon){
-			printf("Something failed: at index");
+			mep = 0;
 		}
 	}
 	if(mep == 1){
