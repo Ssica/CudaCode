@@ -98,7 +98,7 @@ void scanExc(    unsigned int  block_size,
 
 	scanInc(block_size, d_size, d_in, tmpArray);
 
-	shiftRightByOne<T><<< tmpArray, d_out, OP::identity(), d_size>>>;
+	shiftRightByOne(tmpArray, d_out, OP::identity(), d_size);
 	cudaThreadSynchronize();
 
 	cudaFree(tmpArray );
@@ -202,7 +202,7 @@ void sgmScanExc( const unsigned int  block_size,
 
 	sgmScanInc(block_size, flags, d_size, d_in, tmpArray);
 
-	sgmshiftRightByOne<T><<< tmpArray, flags,d_out, OP::identity(), d_size>>>;
+	sgmShiftRightByOne<T>( tmpArray, flags,d_out, OP::identity(), d_size);
 	cudaThreadSynchronize();
 
 	cudaFree(tmpArray );
