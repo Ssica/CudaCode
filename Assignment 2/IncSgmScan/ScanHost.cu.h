@@ -88,6 +88,12 @@ void scanExc(    unsigned int  block_size,
 ) {
 	T *tmpArray;
 
+    unsigned int num_blocks;
+
+    num_blocks = ( (d_size % block_size) == 0) ?
+                    d_size / block_size     :
+                    d_size / block_size + 1 ;
+
 	cudaMalloc((void**)&tmpArray , num_blocks*sizeof(T));
 
 	scanInc(block_size, d_size, d_in, tmpArray);
@@ -96,8 +102,6 @@ void scanExc(    unsigned int  block_size,
 	cudaThreadSynchronize();
 
 	cudaFree(tmpArray );
-    cudaFree(d_rec_in );
-    cudaFree(d_rec_out);
 }
 
 /**
