@@ -275,7 +275,7 @@ template<class T>
 __global__ void 
 sgmShiftRightByOne(T* d_in, int*flags, T* d_out, T ne, unsigned int d_size) {
     const unsigned int gid = blockIdx.x*blockDim.x + threadIdx.x;
-    if(gid < d_size)
+    if(gid < d_size){
             if      (flags[gid] != 0)      d_out[gid] = ne;
     		else if (flags[gid] == 0)  d_out[gid] = d_in[gid-1];
     }
