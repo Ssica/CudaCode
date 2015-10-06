@@ -292,7 +292,7 @@ sgmShiftRightByOne(T* d_in, int*flags, T* d_out, T ne, unsigned int d_size) {
  *              in number of int (MyInt4) elements
  **/
 __global__ void 
-msspTrivialMap(int* inp_d, MyInt4* inp_lift, int inp_size) {
+msspTrivialMap(int* inp_d, MyInt4* inp_list, int inp_size) {
     const unsigned int gid = blockIdx.x*blockDim.x + threadIdx.x;
     if(gid < inp_size) {
 		if(inp_d[gid] == 0){
