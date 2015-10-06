@@ -295,9 +295,9 @@ __global__ void
 msspTrivialMap(int* inp_d, MyInt4* inp_list, int inp_size) {
     const unsigned int gid = blockIdx.x*blockDim.x + threadIdx.x;
     if(gid < inp_size) {
-		if(inp_d[gid] == 0) inp_list[gid] = MyInt4(pew(0, 0, 0, inp_d[gid]));
+		if(inp_d[gid] == 0) inp_list[gid] = MyInt4(0, 0, 0, inp_d[gid]);
 		else{
-			inp_list[gid] = MyInt4(pew(inp_d[gid],inp_d[gid],inp_d[gid],inp_d[gid]));
+			inp_list[gid] = MyInt4(inp_d[gid],inp_d[gid],inp_d[gid],inp_d[gid]);
 		}
         // ... fill in the blanks ...
     }
