@@ -193,6 +193,11 @@ void sgmScanExc( const unsigned int  block_size,
 ) {
  	T *tmpArray;
 
+    unsigned int num_blocks;
+
+    num_blocks = ( (d_size % block_size) == 0) ?
+                    d_size / block_size     :
+                    d_size / block_size + 1 ;
 	cudaMalloc((void**)&tmpArray , num_blocks*sizeof(T));
 
 	sgmScanInc(block_size, flags, d_size, d_in, tmpArray);
@@ -201,7 +206,5 @@ void sgmScanExc( const unsigned int  block_size,
 	cudaThreadSynchronize();
 
 	cudaFree(tmpArray );
-    cudaFree(d_rec_in );
-    cudaFree(d_rec_out);
 }
 #endif //SCAN_HOST
