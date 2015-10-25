@@ -57,7 +57,7 @@ int main(){
 	cudaMalloc((void**)&d_C,mem_size);
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
-    tiling_transpose_kernel<T><<<grid,block>>>(d_A, d_C, ROWS, COLS);
+    tiling_transpose_kernel<T, TILE><<<grid,block>>>(d_A, d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);

@@ -53,8 +53,6 @@ int main(){
     cudaFree(d_C);
 
 
-    float* d_A;
-	float* d_C;
 	cudaMalloc((void**)&d_A,mem_size);
 	cudaMalloc((void**)&d_C,mem_size);
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
