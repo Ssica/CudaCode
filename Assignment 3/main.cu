@@ -19,6 +19,7 @@ int main(){
 	cudaMalloc((void**)&d_A,mem_size);
 	cudaMalloc((void**)&d_C,mem_size);
 
+    unsigned long int elapsed;
     srand(time(0));
 
     for(int i = 0; i<ROWS; i++){
