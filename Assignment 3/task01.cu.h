@@ -19,10 +19,10 @@ __global__ void transpose_kernel_naive(float* matrix_in, float* matrix_out, int 
     int j = blockIdx.x * blockDim.x + threadIdx.x;
 
     if(i >= rows || j >= col){
-        return ;
+        return;
     }
     
-    matrix_out[j*row+i] = m_in[i*col+j];
+    matrix_out[j*rows+i] = m_in[i*col+j];
 }
 
 /*
@@ -33,7 +33,7 @@ template<class T, int P>
 __global__ void tiled_transpose_kernel(float* matrix_in, float* matrix_out, int rows, int col){
 
     //P is tile size
-    __shared__ float tile[P][P+1]
+    __shared__ float tile[P][P+1];
 
     int tidx = threadIdx.x;
 	int tidy = threadIdx.y;
