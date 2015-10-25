@@ -12,7 +12,7 @@ void validate_trans(float* mat1, float* mat2){
     int bo = 0;    
     for(int i=0; i<ROWS; i++){
         for(int j=0; j<COLS; j++){
-            if (mat1[i*cols+j] != mat2[j*rows+i] ){
+            if (mat1[i*COLS+j] != mat2[j*ROWS+i] ){
                 bo = 1;
             } 
         }   
