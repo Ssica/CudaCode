@@ -133,7 +133,7 @@ void scanExcTest(bool is_segmented) {
         if(is_segmented)
             sgmScanExc< Add<int>,int > ( block_size, num_threads, d_in, flags_d, d_out );
         else
-            scanExcl< Add<int>,int > ( block_size, num_threads, d_in, d_out );
+            scanExc< Add<int>,int > ( block_size, num_threads, d_in, d_out );
 
         // copy host memory to device
         cudaMemcpy(h_out, d_out, mem_size, cudaMemcpyDeviceToHost);

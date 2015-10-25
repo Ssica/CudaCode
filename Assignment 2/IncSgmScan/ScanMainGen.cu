@@ -240,5 +240,7 @@ int main(int argc, char** argv) {
     scanIncTest(true);
     scanIncTest(true);
     scanIncTest(false);
-    scan
+    scanExcTest(true);
+    scanExcTest(false);
+    MsspTest();
 }
