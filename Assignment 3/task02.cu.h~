@@ -14,7 +14,7 @@ __global__ void quick_2c_kernel(float* matrix_in, float* matrix_out, int row){
     float accum = matrix_in[i] * matrix_in[i];
     matrix_out[i+0] = accum;
     for(int k=1; k<64; k++){
-        float* tmpA = matrix_in[i+k];
+        float tmpA = matrix_in[i+k];
         accum = sqrt(accum)+tmpA * tmpA;
         matrix_out[i+k];
     }
