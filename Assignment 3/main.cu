@@ -44,7 +44,7 @@ int main(){
 
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
-    transpose_kernel_naive<<<grid,block>>>(float* d_A, float* d_C, ROWS, COLS);
+    transpose_kernel_naive<<<grid,block>>>(d_A, d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
