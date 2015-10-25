@@ -52,6 +52,11 @@ int main(){
     cudaFree(d_A);    
     cudaFree(d_C);
 
+
+    float* d_A;
+	float* d_C;
+	cudaMalloc((void**)&d_A,mem_size);
+	cudaMalloc((void**)&d_C,mem_size);
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
     tiling_transpose_kernel<T><<<grid,block>>>(d_A, d_C, ROWS, COLS);
