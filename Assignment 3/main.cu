@@ -44,9 +44,9 @@ int main(){
 
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
-    transpose_kernel_naive<T>(float* d_A, float* d_C, ROWS, COLS);
+    transpose_kernel_naive<T><<<grid,block>>>(float* d_A, float* d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
-	timeval_subtract<T><<<grid,block>>>(&t_diff, &t_end, &t_start);
+	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
     printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);
     cudaFree(d_A);    
