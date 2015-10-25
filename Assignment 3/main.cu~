@@ -7,6 +7,21 @@
 #define COLS 8192
 #define TILE 32
 
+
+void validate_trans(float* mat1, float* mat2){
+    int bo = 0;    
+    for(int i=0; i<ROWS; i++){
+        for(int j=0; j<COLS; j++){
+            if (mat1[i*cols+j] != mat2[j*rows+i] ){
+                bo = 1;
+            } 
+        }   
+    }
+    if(bo == 1){
+        println("validate of transpose failed");
+    }
+    println("validate of transpose correct");
+}
 int main(){
     size_t size = COLS * ROWS;
 	size_t mem_size = sizeof(float) * size;
@@ -35,7 +50,7 @@ int main(){
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);	
 	printf("Sequential transpose ran in %lu microseconds.\n",elapsed);
-
+    validate_trans(h_A, h_B);
     //Parallel tranpose
     float* d_A;
 	float* d_C;
@@ -49,6 +64,8 @@ int main(){
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
     printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);
+
+   
     cudaFree(d_A);    
     cudaFree(d_C);
 
@@ -57,7 +74,7 @@ int main(){
 	cudaMalloc((void**)&d_C,mem_size);
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
-    tiling_transpose_kernel<T><<<grid,block>>>(d_A, d_C, ROWS, COLS);
+    tiling_transpose_kernel<T, TILE><<<grid,block>>>(d_A, d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);

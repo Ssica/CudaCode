@@ -7,6 +7,21 @@
 #define COLS 8192
 #define TILE 32
 
+
+void validate_trans(float* mat1, float* mat2){
+    int bo = 0;    
+    for(int i=0; i<ROWS; i++){
+        for(int j=0; j<COLS; j++){
+            if (mat1[i*cols+j] != mat2[j*rows+i] ){
+                bo = 1;
+            } 
+        }   
+    }
+    if(bo == 1){
+        println("validate of transpose failed");
+    }
+    println("validate of transpose correct");
+}
 int main(){
     size_t size = COLS * ROWS;
 	size_t mem_size = sizeof(float) * size;
@@ -35,6 +50,7 @@ int main(){
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);	
 	printf("Sequential transpose ran in %lu microseconds.\n",elapsed);
+    validate_trans(h_A, h_B);
 
     //Parallel tranpose
     float* d_A;
@@ -48,7 +64,8 @@ int main(){
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
-    printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);
+    printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);   
+    validate_trans(d_a, d_C);
     cudaFree(d_A);    
     cudaFree(d_C);
 
