@@ -298,7 +298,7 @@ msspTrivialMap(int* inp_d, MyInt4* inp_list, int inp_size) {
     if(gid < inp_size) {
         int tmp = inp_d[gid];
         MyInt4 res(max(tmp,0),max(tmp,0),max(tmp,0),tmp); 
-        inp_lift[gid] = res;
+        inp_list[gid] = res;
     }
 }
 
