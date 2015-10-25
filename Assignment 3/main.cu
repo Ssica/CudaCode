@@ -13,7 +13,7 @@ int main(){
 	float* h_A = (float*) malloc(mem_size);
 	float* h_B = (float*) malloc(mem_size);
 	float* h_C = (float*) malloc(mem_size);
-
+    int const T = 32;
     unsigned long int elapsed;
     srand(time(0));
 
@@ -39,7 +39,7 @@ int main(){
 
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
-    transpose_kernel_naive<float, TILE>(float* d_A, float* d_C, ROWS, COLS);
+    transpose_kernel_naive<T>(float* d_A, float* d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
