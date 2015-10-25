@@ -16,7 +16,7 @@ __global__ void quick_2c_kernel(float* matrix_in, float* matrix_out, int row){
     for(int k=1; k<64; k++){
         float tmpA = matrix_in[i+k];
         accum = sqrt(accum)+tmpA * tmpA;
-        matrix_out[i+k];
+        matrix_out[i+k] = accum;
     }
 }
 
@@ -37,9 +37,9 @@ __global__ void 2d_kernel(float* matrix_in, float* matrix_out, int row){
     matrix_out[i+0] = accum;
     for(int k=1; k<row; k++){
         i = i + row;
-        float* tmpA = matrix_in[i];
+        float tmpA = matrix_in[i];
         accum = sqrt(accum)+tmpA * tmpA;
-        matrix_out[i+k];
+        matrix_out[i+k] = accum;
     }
 }
 
