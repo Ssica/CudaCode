@@ -58,7 +58,7 @@ int main(){
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
-    printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);
+    printf("Tiled Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);
     cudaFree(d_A);    
     cudaFree(d_C);
 
