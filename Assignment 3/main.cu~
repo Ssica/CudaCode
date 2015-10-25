@@ -34,7 +34,6 @@ int main(){
     seque_transpose(h_A, h_B, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
-	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
-	
+	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);	
 	printf("Sequential transpose ran in %lu microseconds.\n",elapsed); 
 }
