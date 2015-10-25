@@ -200,7 +200,7 @@ void sgmScanExc( const unsigned int  block_size,
                     d_size / block_size + 1 ;
 	cudaMalloc((void**)&tmpArray , num_blocks*sizeof(T));
 
-	sgmScanInc<OP, T>block_size, flags, d_size, d_in, tmpArray);
+	sgmScanInc<OP, T>(block_size, flags, d_size, d_in, tmpArray);
 
 	sgmShiftRightByOne<T><<< num_blocks, block_size >>>( tmpArray, flags,d_out, OP::identity(), d_size);
 	cudaThreadSynchronize();
