@@ -1,27 +1,15 @@
 -------------------- Report --------------------------------
+Every task except for 3.d as been attempted/made.
 
-I unfortunately haven't had the much time to make the assignment, I've made attempt on 2 sub- tasks, but without tests. Thought I know it's no excuse, but many resubmissions in AP came at once,
-so I've asked if I can get 1 or 2 more days to do the assignments in PMPH, though since I haven't gotten a answer I'm submitting this first.
+I have one problem though, which is that for some reason I cannot call some of my functions, or rather I'm calling them incorrectly and I haven't been able to figure out why.
 
-
-
-
-
-task 1a)
-made an attempt, but haven't tested.
-
-task 1c)
-made an attempt but haven't tested.
-
-task 2a)
-
+2.a: 
 Outer loop has a variable dependency of accum, when accum is declared outside of the loop.
 Outer loop, as written in the assignment, is parallel, as it has no variabel dependency for B.
 
-No it's sequential. The line 6, accum, has a dependency on itself.
+No it's sequential. The line 6, accum, has a dependency on itself as it takes the sqrt which is not associative.
 
-I do not believe it is possible to make it run in parallel, as accum's self dependency blocks.
-Maybe, since the J-loop is from 1-63, one could calculate all the values of accum, but since the new value of accum is dependent on tmpA, I still do not believe this is possible.
+I do not believe it is possible to make it run in parallel, as accum's self dependency as it takes the sqrt.
 
-task 2.c)
-Made an attempt, but haven't tested.
+If line 6 is rewritten it will be possible to rewrite it to parallel as the operator is associative.
+

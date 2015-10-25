@@ -27,7 +27,7 @@ int scanIncTest(bool is_segmented) {
     gettimeofday(&t_start, NULL); 
 
 
-    { // calling exclusive (segmented) scan
+    { // calling inclusive (segmented) scan
         int* d_in;
         int* d_out;
         int* flags_d;
@@ -38,17 +38,16 @@ int scanIncTest(bool is_segmented) {
         // copy host memory to device
         cudaMemcpy(d_in, h_in, mem_size, cudaMemcpyHostToDevice);
         cudaMemcpy(flags_d, flags_h, num_threads*sizeof(int), cudaMemcpyHostToDevice);
-        /*
+
         // execute kernel
         if(is_segmented)
             sgmScanInc< Add<int>,int > ( block_size, num_threads, d_in, flags_d, d_out );
         else
             scanInc< Add<int>,int > ( block_size, num_threads, d_in, d_out );
-        */
-        sgmScanExcl< Add<int>,int > ( block_size, num_threads, d_in,flags_d, d_out );
+
         // copy host memory to device
         cudaMemcpy(h_out, d_out, mem_size, cudaMemcpyDeviceToHost);
-        printf("%d\n",h_out[1]);
+
         // cleanup memory
         cudaFree(d_in );
         cudaFree(d_out);
@@ -58,8 +57,37 @@ int scanIncTest(bool is_segmented) {
     gettimeofday(&t_end, NULL);
     timeval_subtract(&t_diff, &t_end, &t_start);
     elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec); 
-    printf("Scan Exclusive on GPU runs in: %lu microsecs\n", elapsed);
-   
+    printf("Scan Inclusive on GPU runs in: %lu microsecs\n", elapsed);
+
+    // validation
+    bool success = true;
+    int  accum   = 0;
+    if(is_segmented) {
+        for(int i=0; i<num_threads; i++) {
+            if (i % sgm_size == 0) accum  = 0;
+            accum += 1;
+            
+            if ( accum != h_out[i] ) { 
+                success = false;
+                //printf("Scan Inclusive Violation: %.1d should be %.1d\n", h_out[i], accum);
+            }
+        }        
+    } else {
+        for(int i=0; i<num_threads; i++) {
+            accum += 1;
+ 
+            if ( accum != h_out[i] ) { 
+                success = false;
+                //printf("Scan Inclusive Violation: %.1d should be %.1d\n", h_out[i], accum);
+            }
+        }        
+    }
+
+    if(success) printf("\nScan Inclusive +   VALID RESULT!\n");
+    else        printf("\nScan Inclusive + INVALID RESULT!\n");
+
+
+    // cleanup memory
     free(h_in );
     free(h_out);
     free(flags_h);
