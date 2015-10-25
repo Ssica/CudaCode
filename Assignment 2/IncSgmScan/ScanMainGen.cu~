@@ -190,5 +190,4 @@ int main(int argc, char** argv) {
     scanIncTest(false);
     scanExcTest(true);
     scanExcTest(false);
-    MsspTest();
 }

@@ -188,6 +188,6 @@ int main(int argc, char** argv) {
     scanIncTest(true);
     scanIncTest(true);
     scanIncTest(false);
-    scanExcTest(true);
     scanExcTest(false);
+    scanExcTest(true);
 }
