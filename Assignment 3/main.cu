@@ -37,7 +37,7 @@ int main(){
 	cudaMalloc((void**)&d_A,mem_size);
 	cudaMalloc((void**)&d_C,mem_size);
 
-    cudaMemcpy(d_A, h_a, mem_size, cudaMemcpyHostToDevice);
+    cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
     transpose_kernel_naive(float* d_A, float* d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
@@ -46,5 +46,7 @@ int main(){
     printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);
     cudaFree(d_A);    
     cudaFree(d_C);
+
+
 
 }
