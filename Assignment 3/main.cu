@@ -13,7 +13,12 @@ int main(){
 	float* h_A = (float*) malloc(mem_size);
 	float* h_B = (float*) malloc(mem_size);
 	float* h_C = (float*) malloc(mem_size);
+
     int const T = 32;
+    int dimx = (COLS+T-1)/T;
+    int dimy = (ROWS+T-1)/T;
+    dim3 block(T,T,1), grid(dimx, dimy, 1);
+
     unsigned long int elapsed;
     srand(time(0));
 
