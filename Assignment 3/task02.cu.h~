@@ -43,5 +43,3 @@ __global__ void quick_2c_kernel(float* matrix_in, float* matrix_out, int row){
     }
 }
 
-
-
