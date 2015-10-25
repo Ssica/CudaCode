@@ -122,6 +122,20 @@ int main(){
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
-    printf("Sequential Matrix Multiplaction ran in %lu microseconds.\n",elapsed);	
+    printf("Sequential Matrix Multiplaction ran in %lu microseconds.\n",elapsed);
+
+    //Parallel Matrix Multiplication
+	cudaMalloc((void**)&d_A,mem_size);
+	cudaMalloc((void**)&d_C,mem_size);
+    cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
+    gettimeofday(&t_start,NULL);
+    naive_matrixmult<T><<<grid,block>>>(d_A, d_A, d_C, ROWS, COLS, COLS);
+	gettimeofday(&t_end, NULL);
+	timeval_subtract(&t_diff, &t_end, &t_start);
+	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
+    printf("Naive Matrix Multiplication Kernel ran in %lu microseconds.\n",elapsed);
+    cudaFree(d_A);    
+    cudaFree(d_C);
+
 
 }
