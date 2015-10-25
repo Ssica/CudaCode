@@ -183,62 +183,12 @@ void scanExcTest(bool is_segmented) {
     free(flags_h);
 }
 
-void MsspTest(){
-	int block_size = 256;
-	int arr_len = 9000;
-	int mem_size = arr_len*sizeof(MyInt4);
-	int* h_in = (int*)malloc(arr_len*sizeof(int));
-
-	int* d_in;
-	MyInt4* d_lift;
-	MyInt4* d_res;
-	cudaMalloc((void**)&d_in,arr_len*sizeof(int));
-	cudaMalloc((void**)&d_lift,mem_size);
-	cudaMalloc((void**)&d_res,mem_size);
-
-	//fill input with ones
-	for(int i = 0; i < arr_len; i++) {
-	        h_in[i] = 1;
-  	}
-
-	int num_blocks = ( (arr_len % block_size) == 0) ?
-             	            arr_len / block_size     :
-                	    arr_len / block_size + 1 ;
-
-	cudaMemcpy(d_in,h_in,arr_len*sizeof(int),cudaMemcpyHostToDevice);	
-
-	unsigned long int elapsed;
-    struct timeval t_start, t_end, t_diff;
-    gettimeofday(&t_start, NULL); 	
-	
-	msspTrivialMap<<<num_blocks,block_size>>>(d_in,d_lift,arr_len);
-	cudaThreadSynchronize();
-
-	scanInc<MsspOp,MyInt4>(block_size,arr_len,d_lift,d_res);	
-	cudaThreadSynchronize();
-
-	MyInt4 h_res(0,0,0,0);
-
-	//give back only last element of result array, for that is the maximum segment sum
-	cudaMemcpy(&h_res,d_res+arr_len-1,sizeof(MyInt4),cudaMemcpyDeviceToHost);
-
-	gettimeofday(&t_end, NULL);
-    timeval_subtract(&t_diff, &t_end, &t_start);
-    elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec); 
-	printf("MSSP runs in: %d microseconds", elapsed);
-
-	if(h_res.x == arr_len) { printf("MSSP RESULT VALID.\n\n"); }
-	else { printf("MSSP RESULT INVALID.\n\n"); }
-
-	free(h_in);
-	cudaFree(d_in);
-	cudaFree(d_lift);
-	cudaFree(d_res);
-}
 
 int main(int argc, char** argv) {
     scanIncTest(true);
     scanIncTest(true);
     scanIncTest(false);
-    scan
+    scanExcTest(true);
+    scanExcTest(false);
+    MsspTest();
 }
