@@ -18,9 +18,9 @@ void validate_trans(float* mat1, float* mat2){
         }   
     }
     if(bo == 1){
-        println("validate of transpose failed");
+        printf("validate of transpose failed");
     }
-    println("validate of transpose correct");
+    printf("validate of transpose correct");
 }
 int main(){
     size_t size = COLS * ROWS;

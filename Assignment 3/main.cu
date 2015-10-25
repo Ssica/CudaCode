@@ -65,7 +65,7 @@ int main(){
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
     printf("Naive Parallel Transpose Kernel ran in %lu microseconds.\n",elapsed);   
-    validate_trans(d_a, d_C);
+    validate_trans(d_A, d_C);
     cudaFree(d_A);    
     cudaFree(d_C);
 
