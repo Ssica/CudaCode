@@ -95,7 +95,7 @@ int main(){
 	cudaMalloc((void**)&d_C,mem_size);
     cudaMemcpy(d_A, h_A, mem_size, cudaMemcpyHostToDevice);
     gettimeofday(&t_start,NULL);
-    quick_2c_kernel(d_A, d_C, ROWS, COLS);
+    quick_2c_kernel<<<grid, block>>>(d_A, d_C, ROWS, COLS);
 	gettimeofday(&t_end, NULL);
 	timeval_subtract(&t_diff, &t_end, &t_start);
 	elapsed = (t_diff.tv_sec*1e6+t_diff.tv_usec);
