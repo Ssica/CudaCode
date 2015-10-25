@@ -19,5 +19,5 @@ size_t size = COLS * ROWS;
 	cudaMalloc((void**)&d_A,mem_size);
 	cudaMalloc((void**)&d_C,mem_size);
 
-    init_matrix(h_a, size);
+    init_matrix(h_A, size);
 }
