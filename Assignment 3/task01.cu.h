@@ -22,7 +22,7 @@ __global__ void transpose_kernel_naive(float* matrix_in, float* matrix_out, int 
         return;
     }
     
-    matrix_out[j*rows+i] = m_in[i*col+j];
+    matrix_out[j*rows+i] = matrix_in[i*col+j];
 }
 
 /*
@@ -50,6 +50,6 @@ __global__ void tiled_transpose_kernel(float* matrix_in, float* matrix_out, int 
 	i = blockIdx.y*P + threadIdx.x;
 	j = blockIdx.x*P + threadIdx.y;
     if (j < col && i < rows){
-    mat_out[j*rows+i] = tile[tidx][tidy];
+    matrix_out[j*rows+i] = tile[tidx][tidy];
     }
 }

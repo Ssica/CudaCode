@@ -33,7 +33,7 @@ template<class T, int P>
 __global__ void tiled_transpose_kernel(float* matrix_in, float* matrix_out, int rows, int col){
 
     //P is tile size
-    __shared__ float tile[P][P+1]
+    __shared__ float tile[P][P+1];
 
     int tidx = threadIdx.x;
 	int tidy = threadIdx.y;
@@ -50,6 +50,6 @@ __global__ void tiled_transpose_kernel(float* matrix_in, float* matrix_out, int 
 	i = blockIdx.y*P + threadIdx.x;
 	j = blockIdx.x*P + threadIdx.y;
     if (j < col && i < rows){
-    mat_out[j*rows+i] = tile[tidx][tidy];
+    matrix_out[j*rows+i] = tile[tidx][tidy];
     }
 }
