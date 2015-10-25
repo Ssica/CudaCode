@@ -15,7 +15,7 @@ int timeval_subtract(struct timeval *result, struct timeval *t2, struct timeval 
 1.a: Sequential implementation of tranpose
 */
 
-void seq_transpose(float *matrix_in,float *matrix_out,int row, int col){
+void seque_transpose(float *matrix_in,float *matrix_out,int row, int col){
     for(int i = 0; i < row; i++){
         for(int j = 0; j < col; j++){
             matrix_out[j*row+i] = matrix_in[i*col+j];
@@ -38,7 +38,7 @@ void matrixmult_seq(float* matrix1, float* matrix2, float* ret_matrix, int rows,
         for(int k = 0; k<cols; k++){
             res = res + matrix1[i*cols+k] * matrix2[k*cols2+j];
         }
-        res_matri[i*cols2+j] = res;    
+        res_matrix[i*cols2+j] = res;    
     }  
  }   
 }
