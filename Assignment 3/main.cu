@@ -8,7 +8,7 @@
 #define TILE 32
 
 int main(){
-size_t size = COLS * ROWS;
+    size_t size = COLS * ROWS;
 	size_t mem_size = sizeof(float) * size;
 	float* h_A = (float*) malloc(mem_size);
 	float* h_B = (float*) malloc(mem_size);
@@ -20,5 +20,18 @@ size_t size = COLS * ROWS;
 	cudaMalloc((void**)&d_C,mem_size);
 
     srand(time(0));
-   init_matrix(h_A,size);
+
+    for(int i = 0; i<ROWS; i++){
+        for(int j = 0; j<COLS; j++){
+            h_A[i*ROWS+j] = i;
+        }
+    }
+
+    //Sequential transpose
+
+    struct timeval t_start,t_end,t_diff;
+	gettimeofday(&t_start, NULL);
+    seque_transpose(h_A, h_B, ROWS, COLS);
+	gettimeofday(&t_end, NULL);
+	timeval_subtract(&t_diff, &t_end, &t_start);
 }
