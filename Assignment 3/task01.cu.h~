@@ -13,7 +13,6 @@ void seq_transpose(float *matrix_in,float *matrix_out,int row, int col){
 /*
 1.c: Parallel Naive Implementation of transpose.
 */
-template<class T>
 __global__ void transpose_kernel_naive(float* matrix_in, float* matrix_out, int rows, int col){
     int i = blockIdx.y * blockDim.y + threadIdx.y;
     int j = blockIdx.x * blockDim.x + threadIdx.x;

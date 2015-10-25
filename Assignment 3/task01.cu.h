@@ -29,7 +29,7 @@ __global__ void transpose_kernel_naive(float* matrix_in, float* matrix_out, int 
 */
 
 template<class T, int P>
-__global__ void tiled_transpose_kernel(float* matrix_in, float* matrix_out, int rows, int col){
+__global__ void tiling_transpose_kernel(float* matrix_in, float* matrix_out, int rows, int col){
 
     //P is tile size
     __shared__ float tile[P][P+1];
