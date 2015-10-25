@@ -38,7 +38,7 @@ void matrixmult_seq(float* matrix1, float* matrix2, float* ret_matrix, int rows,
         for(int k = 0; k<cols; k++){
             res = res + matrix1[i*cols+k] * matrix2[k*cols2+j];
         }
-        res_matrix[i*cols2+j] = res;    
+        ret_matrix[i*cols2+j] = res;    
     }  
  }   
 }
